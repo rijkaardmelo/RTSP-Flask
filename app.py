@@ -14,7 +14,7 @@ NVR = Flask(__name__)
 source = "rtsp://camera-01:camera123@10.200.80.0:554"
 camera = cv2.VideoCapture(source)
 
-def stream():
+def stream(framecount):
     global outputFrame, lock
     if camera.isOpened():
         while True:
@@ -58,14 +58,14 @@ def video_feed():
 
 if __name__ == '__main__':
     # Criando a thread
-    t = threading.Thread(target=stream)
+    t = threading.Thread(target=stream, args=(32,))
     # Executar a thread em segundo plano
     t.daemon = True
     # Inicilizando a thread
     t.start()
  
     # Inicializando flask app
-    NVR.run(host="192.168.102.3", port="5000", debug=False,
+    NVR.run(host="10.200.36.243", port="5000", debug=False,
         threaded=True, use_reloader=False)
  
 # Liberar o ponteiro do fluxo de video
